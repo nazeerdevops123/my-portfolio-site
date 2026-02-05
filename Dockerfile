@@ -1,7 +1,14 @@
+# Use a lightweight web server image
 FROM nginx:alpine
 
-COPY index.html /usr/share/nginx/html
+# Remove default nginx website
+RUN rm -rf /usr/share/nginx/html/*
 
-EXPOSE 80
+# Copy your static files
+COPY . /usr/share/nginx/html
 
+# Expose the port Hyperlift expects
+EXPOSE 8080
+
+# Start nginx (serves static files)
 CMD ["nginx", "-g", "daemon off;"]
