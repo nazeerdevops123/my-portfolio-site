@@ -1,16 +1,17 @@
 FROM nginx:alpine
 
-# Hyperlift expects 8080, not 80
-RUN sed -i 's/listen\s\+80;/listen 8080;/g' /etc/nginx/conf.d/default.conf
+# Remove default config completely
+RUN rm /etc/nginx/conf.d/default.conf
 
-# Remove default site
-RUN rm -rf /usr/share/nginx/html/*
+# Copy our nginx config
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy static files
+# Copy site files
 COPY . /usr/share/nginx/html
 
-# Expose Hyperlift port
+# Fix permissions so nginx user can read files
+RUN chmod -R 755 /usr/share/nginx/html
+
 EXPOSE 8080
 
-# Run nginx in foreground (VERY IMPORTANT)
 CMD ["nginx", "-g", "daemon off;"]
