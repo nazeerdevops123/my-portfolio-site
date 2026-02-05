@@ -1,14 +1,8 @@
-# Use a lightweight web server image
-FROM nginx:alpine
+FROM python:3.11-alpine
 
-# Remove default nginx website
-RUN rm -rf /usr/share/nginx/html/*
+WORKDIR /app
+COPY . .
 
-# Copy your static files
-COPY . /usr/share/nginx/html
-
-# Expose the port Hyperlift expects
 EXPOSE 8080
 
-# Start nginx (serves static files)
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["python3", "-m", "http.server", "8080", "--bind", "0.0.0.0"]
