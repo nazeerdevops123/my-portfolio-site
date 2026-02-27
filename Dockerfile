@@ -9,4 +9,6 @@ COPY . .
 
 ENV NODE_ENV=production
 
+EXPOSE 8080:8080
+
 CMD ["npm", "start"]
